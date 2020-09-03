@@ -69,8 +69,11 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   if (chosenXAxis === "obesity") {
     label = "Obesity Rate:";
   }
-  else {
+  else if (chosenXAxis === "smokes")  {
     label = "Smoking Rate:";
+  }
+  else {
+    label = "Health Coverage:";
   }
 
   var toolTip = d3.tip()
@@ -78,7 +81,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .style("background",'#BCC5F7')
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
+      return (`${d.state}<hr>${label} ${d[chosenXAxis]}%`);
     });
 
   circlesGroup.call(toolTip);
@@ -137,7 +140,17 @@ d3.csv("./assets/data/demoData.csv").then(function(demoData, err) {
     .attr("cy", d => yLinearScale(d.poverty))
     .attr("r", 20)
     .attr("fill", "pink")
-    .attr("opacity", ".5");
+    .attr("opacity", ".5")
+    circlesGroup.append("text")
+    .text(d => d.abbr)
+    .classed("stateText", true)
+    .style("color", "black");
+    // .attr("text", d => d.abbr);
+    // .append("p")
+    // .text(d => d.abbr);
+
+  // var textGroup = svg.selectAll("text")
+
 
   // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
@@ -240,3 +253,4 @@ d3.csv("./assets/data/demoData.csv").then(function(demoData, err) {
 }).catch(function(error) {
   console.log(error);
 });
+
